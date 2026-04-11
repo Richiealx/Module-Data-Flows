@@ -9,13 +9,16 @@ let order = [
 
 let total = 0;
 
+console.log("QTY    ITEM             TOTAL");
+
 order.forEach(({ itemName, quantity, unitPricePence }) => {
   const itemTotal = quantity * unitPricePence;
   total += itemTotal;
 
   console.log(
-    `${itemName} x${quantity} = £${(itemTotal / 100).toFixed(2)}`
+    `${String(quantity).padEnd(6)}${itemName.padEnd(17)}${(itemTotal / 100).toFixed(2)}`
   );
 });
 
-console.log(`Total: £${(total / 100).toFixed(2)}`);
+console.log("");
+console.log(`Total: ${(total / 100).toFixed(2)}`);
