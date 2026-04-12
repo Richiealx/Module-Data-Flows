@@ -9,14 +9,22 @@ let order = [
 
 let total = 0;
 
-console.log("QTY    ITEM             TOTAL");
+// Header (match spacing EXACTLY)
+console.log("QTY     ITEM                TOTAL");
 
 order.forEach(({ itemName, quantity, unitPricePence }) => {
   const itemTotal = quantity * unitPricePence;
   total += itemTotal;
 
+  // Fix capitalisation (Hot cakes → Hot Cakes)
+  const formattedName = itemName
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+  // Format columns exactly
   console.log(
-    `${String(quantity).padEnd(6)}${itemName.padEnd(17)}${(itemTotal / 100).toFixed(2)}`
+    `${String(quantity).padEnd(8)}${formattedName.padEnd(20)}${(itemTotal / 100).toFixed(2)}`
   );
 });
 
