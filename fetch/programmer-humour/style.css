@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #222;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.comic-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.comic-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.comic-title {
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: #b00020;
+  font-weight: bold;
+}
