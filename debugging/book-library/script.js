@@ -7,48 +7,47 @@ window.addEventListener("load", function () {
 
 function populateStorage() {
   if (myLibrary.length === 0) {
-    const book1 = new Book("Robinson Crusoe", "Daniel Defoe", "252", true);
+    const book1 = new Book("Robinson Crusoe", "Daniel Defoe", 252, true);
     const book2 = new Book(
       "The Old Man and the Sea",
       "Ernest Hemingway",
-      "127",
+      127,
       true
     );
 
-    myLibrary.push(book1);
-    myLibrary.push(book2);
+    myLibrary.push(book1, book2);
   }
 }
 
-const title = document.getElementById("title");
-const author = document.getElementById("author");
-const pages = document.getElementById("pages");
-const check = document.getElementById("check");
+const titleInput = document.getElementById("title");
+const authorInput = document.getElementById("author");
+const pagesInput = document.getElementById("pages");
+const readInput = document.getElementById("check");
 
 function submit() {
+  const titleValue = titleInput.value.trim();
+  const authorValue = authorInput.value.trim();
+  const pagesValue = Number(pagesInput.value.trim());
+
   if (
-    title.value.trim() === "" ||
-    author.value.trim() === "" ||
-    pages.value.trim() === ""
+    titleValue === "" ||
+    authorValue === "" ||
+    !Number.isInteger(pagesValue) ||
+    pagesValue <= 0
   ) {
-    alert("Please fill all fields!");
+    alert("Please enter a valid title, author, and page count.");
     return false;
   }
 
-  const book = new Book(
-    title.value.trim(),
-    author.value.trim(),
-    pages.value.trim(),
-    check.checked
-  );
+  const book = new Book(titleValue, authorValue, pagesValue, readInput.checked);
 
   myLibrary.push(book);
   render();
 
-  title.value = "";
-  author.value = "";
-  pages.value = "";
-  check.checked = false;
+  titleInput.value = "";
+  authorInput.value = "";
+  pagesInput.value = "";
+  readInput.checked = false;
 
   return false;
 }
@@ -61,44 +60,42 @@ function Book(title, author, pages, check) {
 }
 
 function render() {
-  const table = document.getElementById("display");
-  const rowsNumber = table.rows.length;
-
-  for (let n = rowsNumber - 1; n > 0; n--) {
-    table.deleteRow(n);
-  }
+  const tableBody = document.querySelector("#display tbody");
+  tableBody.innerHTML = "";
 
   for (let i = 0; i < myLibrary.length; i++) {
-    const row = table.insertRow(-1);
+    const row = tableBody.insertRow();
+
     const titleCell = row.insertCell(0);
     const authorCell = row.insertCell(1);
     const pagesCell = row.insertCell(2);
-    const wasReadCell = row.insertCell(3);
+    const readCell = row.insertCell(3);
     const deleteCell = row.insertCell(4);
 
     titleCell.textContent = myLibrary[i].title;
     authorCell.textContent = myLibrary[i].author;
     pagesCell.textContent = myLibrary[i].pages;
 
-    const changeBut = document.createElement("button");
-    changeBut.className = "btn btn-success";
-    changeBut.textContent = myLibrary[i].check ? "Yes" : "No";
-    wasReadCell.appendChild(changeBut);
+    const readButton = document.createElement("button");
+    readButton.className = "btn btn-success";
+    readButton.textContent = myLibrary[i].check ? "Yes" : "No";
+    readCell.appendChild(readButton);
 
-    changeBut.addEventListener("click", function () {
+    readButton.addEventListener("click", function () {
       myLibrary[i].check = !myLibrary[i].check;
       render();
     });
 
-    const delButton = document.createElement("button");
-    delButton.className = "btn btn-warning";
-    delButton.textContent = "Delete";
-    deleteCell.appendChild(delButton);
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "btn btn-warning";
+    deleteButton.textContent = "Delete";
+    deleteCell.appendChild(deleteButton);
 
-    delButton.addEventListener("click", function () {
-      alert(`You've deleted title: ${myLibrary[i].title}`);
+    deleteButton.addEventListener("click", function () {
+      const deletedTitle = myLibrary[i].title;
       myLibrary.splice(i, 1);
       render();
+      alert(`You've deleted title: ${deletedTitle}`);
     });
   }
 }
